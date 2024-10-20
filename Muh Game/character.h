@@ -105,10 +105,10 @@ public:
     void heal(int amount);
 
     // Inventory Management
-    void equipWeapon(const std::string& weapon);
-    void unequipWeapon();
-    void useConsumable(const std::string& consumable);
-    void listInventory() const;
+    //void equipWeapon(const std::string& weapon);
+    //void unequipWeapon();
+    //void useConsumable(const std::string& consumable);
+    //void listInventory() const;
 
     // Skills Management
     // Weapon Skills

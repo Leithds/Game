@@ -162,21 +162,21 @@ void Character::heal(int amount) {
 }
 
 // Inventory Management
-void Character::equipWeapon(const std::string& weapon) {
-    inventory.equipWeapon(weapon);
-}
-
-void Character::unequipWeapon() {
-    inventory.unequipWeapon();
-}
-
-void Character::useConsumable(const std::string& consumable) {
-    inventory.useConsumable(consumable);
-}
-
-void Character::listInventory() const {
-    inventory.listAllItems();
-}
+//void Character::equipWeapon(const std::string& weapon) {
+//    inventory.equipWeapon(weapon);
+//}
+//
+//void Character::unequipWeapon() {
+//    inventory.unequipWeapon();
+//}
+//
+//void Character::useConsumable(const std::string& consumable) {
+//    inventory.useConsumable(consumable);
+//}
+//
+//void Character::listInventory() const {
+//    inventory.listAllItems();
+//}
 
 // Skills Management
 // Weapon Skills
@@ -249,5 +249,6 @@ int Character::draw() const {
 int Character::damageDie() const {
     // Get the die rolled for that weapon
     // Placeholder for now, this should look at the equipped weapon's damage die
-    int weapon_die = 6;  // would look somthing like this I think int weapon_die = equipped_weapon.damage_die (I think the equipped_weapon class would hanndle any skills that may adjust the damage die, so that that modifer is nor checked every loop)
+    //int weapon_die = 6;  // would look somthing like this I think int weapon_die = equipped_weapon.damage_die (I think the equipped_weapon class would hanndle any skills that may adjust the damage die, so that that modifer is nor checked every loop)
+    return 6;
 }

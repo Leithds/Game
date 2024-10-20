@@ -10,6 +10,8 @@
 // Combat class declaration
 class Combat {
 public:
+    Combat();
+
     // Main combat loop
     void combatLoop(Character& combatantA, Character& combatantB);
 
@@ -18,7 +20,7 @@ private:
     int getStat(const Character& combatant, const std::string& statName);
 
     // Unified function to get stats for attack or defense
-    int getStats(Character& combatant, const std::string& moveChoice, bool isAttack);
+    int getStats(Character& combatant, std::string moveChoice, bool isAttack);
 
     // Get attack and defense choices for a combatant
     std::pair<std::string, std::string> getChoices(Character& combatant);
