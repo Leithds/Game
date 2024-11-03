@@ -1,254 +1,173 @@
+#pragma once
 #include "Character.h"
+#include "Inventory.h"
+#include "stance.h"
+#include "AttackStance.h"
+#include "DefenseStance.h"
+#include <iostream>
+#include <memory>
 
-// Constructor implementation
-Character::Character(const std::string& name,
-    const std::string& clan,
-    const std::string& species)
+class AttackStance; // Forward declaration
+class DefenseStance; // Forward declaration
+
+// Constructor
+Character::Character(const std::string& name, const std::string& clan, const std::string& species)
     : name(name), clan(clan), species(species),
     str(0), dex(0), con(0),
     will(0), foc(0), res(0),
-    level(1), exp(0), realm(0), hp(100), relation_points(0) {}
+    level(1), exp(0), realm(0), hp(100), relation_points(0) {
+    initializeStarterStances();
+}
 
-// Getters and Setters
+// Getters and Setters Implementation
 
 // Labels
-std::string Character::getName() const {
-    return name;
-}
-
-void Character::setName(const std::string& n) {
-    name = n;
-}
-
-std::string Character::getClan() const {
-    return clan;
-}
-
-void Character::setClan(const std::string& c) {
-    clan = c;
-}
-
-std::string Character::getSpecies() const {
-    return species;
-}
-
-void Character::setSpecies(const std::string& s) {
-    species = s;
-}
+std::string Character::getName() const { return name; }
+void Character::setName(const std::string& n) { name = n; }
+std::string Character::getClan() const { return clan; }
+void Character::setClan(const std::string& c) { clan = c; }
+std::string Character::getSpecies() const { return species; }
+void Character::setSpecies(const std::string& s) { species = s; }
 
 // Physical Stats
-int Character::getStr() const {
-    return str;
-}
-
-void Character::setStr(int s) {
-    str = s;
-}
-
-int Character::getDex() const {
-    return dex;
-}
-
-void Character::setDex(int d) {
-    dex = d;
-}
-
-int Character::getCon() const {
-    return con;
-}
-
-void Character::setCon(int c) {
-    con = c;
-}
+int Character::getStr() const { return str; }
+void Character::setStr(int s) { str = s; }
+int Character::getDex() const { return dex; }
+void Character::setDex(int d) { dex = d; }
+int Character::getCon() const { return con; }
+void Character::setCon(int c) { con = c; }
 
 // Mental Stats
-int Character::getWill() const {
-    return will;
-}
-
-void Character::setWill(int w) {
-    will = w;
-}
-
-int Character::getFocus() const {
-    return foc;
-}
-
-void Character::setFocus(int f) {
-    foc = f;
-}
-
-int Character::getResilience() const {
-    return res;
-}
-
-void Character::setResilience(int r) {
-    res = r;
-}
+int Character::getWill() const { return will; }
+void Character::setWill(int w) { will = w; }
+int Character::getFocus() const { return foc; }
+void Character::setFocus(int f) { foc = f; }
+int Character::getResilience() const { return res; }
+void Character::setResilience(int r) { res = r; }
 
 // Core Stats
-int Character::getLevel() const {
-    return level;
-}
-
-void Character::setLevel(int l) {
-    level = l;
-}
-
-int Character::getExp() const {
-    return exp;
-}
-
-void Character::setExp(int e) {
-    exp = e;
-}
-
-int Character::getRealm() const {
-    return realm;
-}
-
-void Character::setRealm(int r) {
-    realm = r;
-}
-
-int Character::getHp() const {
-    return hp;
-}
-
-void Character::setHp(int h) {
-    hp = h;
-}
-
-int Character::getRelationPoints() const {
-    return relation_points;
-}
-
-void Character::setRelationPoints(int rp) {
-    relation_points = rp;
-}
+int Character::getLevel() const { return level; }
+void Character::setLevel(int l) { level = l; }
+int Character::getExp() const { return exp; }
+void Character::setExp(int e) { exp = e; }
+int Character::getRealm() const { return realm; }
+void Character::setRealm(int r) { realm = r; }
+int Character::getHp() const { return hp; }
+void Character::setHp(int h) { hp = h; }
+int Character::getRelationPoints() const { return relation_points; }
+void Character::setRelationPoints(int rp) { relation_points = rp; }
 
 // Level Up and Experience
-void Character::addExperience(int amount) {
+void Character::addExperience(int amount) { // example amount of exp. I need to figure this out later
     exp += amount;
     std::cout << name << " gains " << amount << " EXP.\n";
-    // Example: Level up at 100 EXP (I need to add logic for inceasing the exp amount or some other method like this)
     while (exp >= 100) {
         exp -= 100;
         levelUp();
     }
 }
 
-void Character::levelUp() {
+void Character::levelUp() { // example level up, I want the player to choose what to level up from a point pool they get when they level up
     level++;
-    // Example: Increase stats by a fixed amount (I'm not sure if I want the player to pick the stats they raise or if they raise those though ingame actions and levelup give set things)
-    // easy to see standin for now
-    str += 2;
-    dex += 2;
-    con += 2;
-    will += 1;
-    foc += 1;
-    res += 1;
-    hp += 20; // Increase HP on level up
+    str += 2; dex += 2; con += 2;
+    will += 1; foc += 1; res += 1;
+    hp += 20;
     std::cout << name << " has leveled up to Level " << level << "!\n";
-    std::cout << "Stats increased: Strength, Dexterity, Constitution by 2 each; Will, Focus, Resilience by 1 each.\n";
 }
 
 // HP Management
 void Character::heal(int amount) {
     hp += amount;
     std::cout << name << " heals " << amount << " HP.\n";
-    // I need to make sure this does not go over their max amount
-    // or I need to add a mothed so only some things can "over-heal"
 }
-
-// Inventory Management
-//void Character::equipWeapon(const std::string& weapon) {
-//    inventory.equipWeapon(weapon);
-//}
-//
-//void Character::unequipWeapon() {
-//    inventory.unequipWeapon();
-//}
-//
-//void Character::useConsumable(const std::string& consumable) {
-//    inventory.useConsumable(consumable);
-//}
-//
-//void Character::listInventory() const {
-//    inventory.listAllItems();
-//}
 
 // Skills Management
-// Weapon Skills
-std::vector<std::string> Character::getWeaponSkills() const {
-    return weapon_skills;
-    // I'll need to add a way to get a skill needed not jus the whole list so bonues can be applied
+std::vector<std::string> Character::getAttackSkills() const { return attack_skills; }
+void Character::addAttackSkill(const std::string& skill) { attack_skills.push_back(skill); }
+std::vector<std::string> Character::getDefenseSkills() const { return defense_skills; }
+void Character::addDefenseSkill(const std::string& skill) { defense_skills.push_back(skill); }
+std::vector<std::string> Character::getWeaponSkills() const { return weapon_skills; }
+void Character::addWeaponSkill(const std::string& skill) { weapon_skills.push_back(skill); }
+std::vector<std::string> Character::getStyleSkills() const { return style_skills; }
+void Character::addStyleSkill(const std::string& skill) { style_skills.push_back(skill); }
+
+// Stance Management
+void Character::addAttackStance(std::shared_ptr<AttackStance> stance) {
+    attackStancesKnown.push_back(stance);
 }
 
-void Character::addWeaponSkill(const std::string& skill) {
-    weapon_skills.push_back(skill);
+void Character::equipAttackStance(std::shared_ptr<AttackStance> stance) {
+    attackStancesEquipped.push_back(stance);
 }
 
-// Defense Skills
-std::vector<std::string> Character::getDefenseSkills() const {
-    return defense_skills;
-    // I'll need to add a way to get a skill needed not jus the whole list so bonues can be applied
+void Character::addDefenseStance(std::shared_ptr<DefenseStance> stance) {
+    defenseStancesKnown.push_back(stance);
 }
 
-void Character::addDefenseSkill(const std::string& skill) {
-    defense_skills.push_back(skill);
+void Character::equipDefenseStance(std::shared_ptr<DefenseStance> stance) {
+    defenseStancesEquipped.push_back(stance);
 }
 
-// Other Skills
-std::vector<std::string> Character::getMysticSkills() const {
-    return mystic_skills;
-    // I'll need to add a way to get a skill needed not jus the whole list so bonues can be applied
+const std::vector<std::shared_ptr<AttackStance>>& Character::getAttackStancesEquipped() const {
+    return attackStancesEquipped;
 }
 
-void Character::addMysticSkill(const std::string& skill) {
-    mystic_skills.push_back(skill);
+const std::vector<std::shared_ptr<DefenseStance>>& Character::getDefenseStancesEquipped() const {
+    return defenseStancesEquipped;
 }
 
-// Moves Management
-// Attack Moves
-std::vector<std::string> Character::getAttackMoves() const {
-    return attack_moves;
+const std::vector<std::shared_ptr<AttackStance>>& Character::getAttackStancesKnown() const {
+    return attackStancesKnown;
 }
 
-void Character::addAttackMove(const std::string& move) {
-    attack_moves.push_back(move);
+const std::vector<std::shared_ptr<DefenseStance>>& Character::getDefenseStancesKnown() const {
+    return defenseStancesKnown;
 }
 
-// Defense Moves
-std::vector<std::string> Character::getDefenseMoves() const {
-    return defense_moves;
+// Initialize the stances
+void Character::initializeStarterStances() {
+    // Attack Stances
+    attackStancesKnown.push_back(std::make_shared<AttackStance>("Caressing Strikes", Stance::isTag::Softness, Stance::hasTag::Softness, "Constitution", "Dexterity"));
+    attackStancesKnown.push_back(std::make_shared<AttackStance>("Rapid Assault", Stance::isTag::Speed, Stance::hasTag::Speed, "Dexterity", "Strength"));
+    attackStancesKnown.push_back(std::make_shared<AttackStance>("Furious Assault", Stance::isTag::Strength, Stance::hasTag::Strength, "Strength", "Constitution"));
+    attackStancesKnown.push_back(std::make_shared<AttackStance>("Pinpoint Assault", Stance::isTag::Precision, Stance::hasTag::Precision, "Strength", "Dexterity"));
+    attackStancesKnown.push_back(std::make_shared<AttackStance>("Flowing Strikes", Stance::isTag::Fluidity, Stance::hasTag::Fluidity, "Constitution", "Strength"));
+    attackStancesKnown.push_back(std::make_shared<AttackStance>("Feinting Strikes", Stance::isTag::Deception, Stance::hasTag::Deception, "Dexterity", "Constitution"));
+
+    // Defense Stances
+    defenseStancesKnown.push_back(std::make_shared<DefenseStance>("Gliding Steps", Stance::isTag::Softness, Stance::hasTag::Softness, "Constitution", "Dexterity"));
+    defenseStancesKnown.push_back(std::make_shared<DefenseStance>("Instant Guard", Stance::isTag::Speed, Stance::hasTag::Speed, "Dexterity", "Strength"));
+    defenseStancesKnown.push_back(std::make_shared<DefenseStance>("Sturdy Guard", Stance::isTag::Strength, Stance::hasTag::Strength, "Strength", "Constitution"));
+    defenseStancesKnown.push_back(std::make_shared<DefenseStance>("Precision Parry", Stance::isTag::Precision, Stance::hasTag::Precision, "Strength", "Dexterity"));
+    defenseStancesKnown.push_back(std::make_shared<DefenseStance>("Seamless Transition", Stance::isTag::Fluidity, Stance::hasTag::Fluidity, "Constitution", "Strength"));
+    defenseStancesKnown.push_back(std::make_shared<DefenseStance>("False Opening", Stance::isTag::Deception, Stance::hasTag::Deception, "Dexterity", "Constitution"));
 }
 
-void Character::addDefenseMove(const std::string& move) {
-    defense_moves.push_back(move);
+// Get Stats for Stances
+int Character::getStatFromStance(const std::string& statName) const {
+    if (statName == "Str") {
+        return str;  // Return the strength value
+    }
+    else if (statName == "Dex") {
+        return dex;  // Return the dexterity value
+    }
+    else if (statName == "Con") {
+        return con;  // Return the constitution value
+    }
+    // Add more cases as needed for additional stats
+
+    return 0;  // Default return value if no match found
 }
 
-// Mystic Moves
-std::vector<std::string> Character::getMysticMoves() const {
-    return mystic_moves;
-}
-
-void Character::addMysticMove(const std::string& move) {
-    mystic_moves.push_back(move);
+// Equipment Management
+void Character::equipWeapon(const std::string& weapon) { equipped_weapons.push_back(weapon); }
+void Character::unequipWeapon() { if (!equipped_weapons.empty()) equipped_weapons.pop_back(); }
+void Character::addEquipment(const std::string& equipment) { equipment_slots.push_back(equipment); }
+void Character::removeEquipment(const std::string& equipment) {
+    auto it = std::find(equipment_slots.begin(), equipment_slots.end(), equipment);
+    if (it != equipment_slots.end()) equipment_slots.erase(it);
 }
 
 // Combat-Related Methods
-// Draw method
-int Character::draw() const {
-    // Example: Base bonus from Dexterity and Focus
-    // I'll probably change this to somthing other than this for balance
-    return dex + foc;
-}
-
-// Damge Die method
-int Character::damageDie() const {
-    // Get the die rolled for that weapon
-    // Placeholder for now, this should look at the equipped weapon's damage die
-    //int weapon_die = 6;  // would look somthing like this I think int weapon_die = equipped_weapon.damage_die (I think the equipped_weapon class would hanndle any skills that may adjust the damage die, so that that modifer is nor checked every loop)
-    return 6;
-}
+int Character::draw() const { return dex + foc; }
+int Character::damageDie() const { return 6 + str; } // example for now, I want to call the instance of a weapon to fully get its damage

@@ -13,54 +13,102 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Character">
+      <UniqueIdentifier>{bea1d667-4a4f-481f-8590-28967f937f13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Item">
+      <UniqueIdentifier>{542f6fc8-e582-4288-9172-91053a2fa371}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Storage">
+      <UniqueIdentifier>{ecad1166-fd51-4a0f-93f0-814abe2696db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Combat">
+      <UniqueIdentifier>{983ae5f1-218a-4273-a254-112e61028473}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{1693cc47-9535-49de-8330-a547b971162e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Menu">
+      <UniqueIdentifier>{f8b30794-dc98-4a0f-9ad3-11833d49c64f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>Storage</Filter>
+    </ClCompile>
+    <ClCompile Include="combat.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="character.cpp">
+      <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="stance.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="attackStance.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
+    <ClCompile Include="defenseStance.cpp">
+      <Filter>Combat</Filter>
+    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="combat.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="character.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Inventory.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="item.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="weapon.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="wearable.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="roll.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="menu.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="gameState.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="gameEngine.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="mainMenuState.cpp">
+      <Filter>Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="characterCreationState.cpp">
+      <Filter>Menu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="combat.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Inventory.h">
+      <Filter>Storage</Filter>
     </ClInclude>
     <ClInclude Include="character.h">
-      <Filter>Header Files</Filter>
+      <Filter>Character</Filter>
     </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="stance.h">
+      <Filter>Combat</Filter>
     </ClInclude>
-    <ClInclude Include="item.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="attackStance.h">
+      <Filter>Combat</Filter>
     </ClInclude>
-    <ClInclude Include="weapon.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="defenseStance.h">
+      <Filter>Combat</Filter>
     </ClInclude>
-    <ClInclude Include="wearable.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="combat.h">
+      <Filter>Combat</Filter>
     </ClInclude>
     <ClInclude Include="roll.h">
-      <Filter>Header Files</Filter>
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="menu.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="gameState.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="gameEngine.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="mainMenuState.h">
+      <Filter>Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="characterCreationState.h">
+      <Filter>Menu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

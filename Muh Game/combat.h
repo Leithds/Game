@@ -1,10 +1,11 @@
-#ifndef COMBAT_H
-#define COMBAT_H
+#pragma once
 
 #include <string>
 #include <utility>
-#include <unordered_map>
 #include "Character.h"
+#include "stance.h"
+#include "attackStance.h"
+#include "defenseStance.h"
 #include "Roll.h"
 
 // Combat class declaration
@@ -16,33 +17,21 @@ public:
     void combatLoop(Character& combatantA, Character& combatantB);
 
 private:
-    // Function to get the specified stat for a combatant
-    int getStat(const Character& combatant, const std::string& statName);
+    // Unified function to get stats from stance
+    int getStats(Character& combatant, const std::string& stanceName, bool isAttack);
 
-    // Unified function to get stats for attack or defense
-    int getStats(Character& combatant, std::string moveChoice, bool isAttack);
-
-    // Get attack and defense choices for a combatant
+    // Get attack and defense choices
     std::pair<std::string, std::string> getChoices(Character& combatant);
 
-    // Determine which combatant acts first based on initiative
+    // Determine which combatant acts first
     std::string determineFirst(Character& combatantA, Character& combatantB);
 
-    // Calculate the damage for the attack
-    int calculateDamage(const Character& attacker, const std::string& attackType);
+    // Calculate the damage
+    int calculateDamage(const Character& attacker, const std::string& stanceType);
 
-    // Process the attack for a combatant
-    void processAttack(Character& attacker, Character& defender, int attackRoll, int defenseRoll, const std::string& attackType);
+    // Process the attack
+    void processAttack(Character& attacker, Character& defender, int attackRoll, int defenseRoll, const std::string& stanceType);
 
-    // Apply damage to a Character
-    void applyDamage(Character& target, int damage);
-
-    // Roll class instance for dice rolling
+    // Roll class for dice rolling
     Roll dice;
-
-    // Maps for attack and defense moves
-    std::unordered_map<std::string, std::pair<std::string, std::string>> attackMoves;
-    std::unordered_map<std::string, std::pair<std::string, std::string>> defenseMoves;
 };
-
-#endif // COMBAT_H

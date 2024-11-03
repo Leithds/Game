@@ -1,71 +1,43 @@
-#include "combat.h"
+#include "Combat.h"
 #include "Character.h"
 #include "Roll.h"
+#include "AttackStance.h"
+#include "DefenseStance.h"
+#include "stance.h"
 #include <iostream>
-#include <unordered_map>
 #include <algorithm>
 
-// Initialize the Roll class
+// Initialize Roll
 Roll dice;
 
-// Constructor for Combat class to initialize the attack and defense moves
-Combat::Combat() {
-    // Attack and defense move definitions
-    attackMoves = {
-        {"strong", {"con", "str"}},
-        {"fast", {"dex", "str"}},
-        {"accurate", {"con", "dex"}}
-    };
+// Constructor for Combat
+Combat::Combat() {}
 
-    defenseMoves = {
-        {"dodge", {"dex", "con"}},
-        {"block", {"str", "con"}},
-        {"parry", {"dex", "str"}}
-    };
-}
-
-// Function to convert input to lowercase for normalization
-std::string toLowerCase(const std::string& input) {
-    std::string result = input;
-    std::transform(result.begin(), result.end(), result.begin(), ::tolower);
-    return result;
-}
-
-// Helper function to trim leading and trailing spaces
-std::string trim(const std::string& str) {
-    size_t first = str.find_first_not_of(' ');
-    size_t last = str.find_last_not_of(' ');
-    return (first == std::string::npos || last == std::string::npos) ? "" : str.substr(first, last - first + 1);
-}
-
-// Function to get the specified stat for a combatant
-int Combat::getStat(const Character& combatant, const std::string& statName) {
-    if (statName == "con") return combatant.getCon();
-    else if (statName == "dex") return combatant.getDex();
-    else if (statName == "str") return combatant.getStr();
-    return 0; // Default case
-}
-
-// Unified function to get stats for attack or defense
-int Combat::getStats(Character& combatant, std::string moveChoice, bool isAttack) {
-    moveChoice = toLowerCase(moveChoice);  // Normalize input
-    int stat1 = 0, stat2 = 0;
-
-    if (isAttack && attackMoves.find(moveChoice) != attackMoves.end()) {
-        std::pair<std::string, std::string> stats = attackMoves[moveChoice];
-        stat1 = getStat(combatant, stats.first);
-        stat2 = getStat(combatant, stats.second);
-        return stat1 + stat2 + dice.roll(20); // Add roll for attacks
+// Unified function to get stats for a stance
+int Combat::getStats(Character& combatant, const std::string& stanceName, bool isAttack) {
+    if (isAttack) {
+        const auto& equippedAttacks = combatant.getAttackStancesEquipped();
+        for (const auto& stance : equippedAttacks) {
+            if (stance->getName() == stanceName) {
+                int stat1 = combatant.getStatFromStance(stance->getPrimaryStat());
+                int stat2 = combatant.getStatFromStance(stance->getSecondaryStat());
+                return stat1 + stat2 + dice.roll(20);
+            }
+        }
     }
-    else if (!isAttack && defenseMoves.find(moveChoice) != defenseMoves.end()) {
-        std::pair<std::string, std::string> stats = defenseMoves[moveChoice];
-        stat1 = getStat(combatant, stats.first);
-        stat2 = getStat(combatant, stats.second);
-        return stat1 + stat2 + 10; // No roll for defense (static bonus)
+    else {
+        const auto& equippedDefenses = combatant.getDefenseStancesEquipped();
+        for (const auto& stance : equippedDefenses) {
+            if (stance->getName() == stanceName) {
+                int stat1 = combatant.getStatFromStance(stance->getPrimaryStat());
+                int stat2 = combatant.getStatFromStance(stance->getSecondaryStat());
+                return stat1 + stat2 + dice.roll(20);
+            }
+        }
     }
-
-    return 0; // Invalid move case
+    return 0; // If no matching stance is found
 }
+
 
 // Main combat loop
 void Combat::combatLoop(Character& combatantA, Character& combatantB) {
@@ -76,10 +48,10 @@ void Combat::combatLoop(Character& combatantA, Character& combatantB) {
 
         std::pair<std::string, std::string> choicesA = getChoices(combatantA);
         std::pair<std::string, std::string> choicesB = getChoices(combatantB);
-        std::string attackA = toLowerCase(choicesA.first);
-        std::string defenseA = toLowerCase(choicesA.second);
-        std::string attackB = toLowerCase(choicesB.first);
-        std::string defenseB = toLowerCase(choicesB.second);
+        std::string attackA = choicesA.first; // Removed toLowerCase
+        std::string defenseA = choicesA.second; // Removed toLowerCase
+        std::string attackB = choicesB.first; // Removed toLowerCase
+        std::string defenseB = choicesB.second; // Removed toLowerCase
 
         // Determine initiative
         std::string first = determineFirst(combatantA, combatantB);
@@ -125,40 +97,49 @@ void Combat::combatLoop(Character& combatantA, Character& combatantB) {
 std::pair<std::string, std::string> Combat::getChoices(Character& combatant) {
     std::string attack;
     std::string defense;
+    bool valid;
 
     // Validate attack choice
     while (true) {
-        std::cout << combatant.getName() << ", choose your attack action (Strong, Fast, Accurate): ";
-        std::getline(std::cin, attack); // Use getline to avoid leftover characters
+        std::cout << combatant.getName() << ", choose your attack stance: ";
+        std::getline(std::cin, attack);
 
-        // Trim whitespace and normalize input to lowercase
-        attack = toLowerCase(trim(attack));
+        // Check if the attack stance is valid
+        const auto& equippedAttacks = combatant.getAttackStancesEquipped();
+        valid = std::any_of(equippedAttacks.begin(), equippedAttacks.end(),
+            [&attack](const std::shared_ptr<AttackStance>& stance) {
+                return stance && stance->getName() == attack; // Dereference the shared pointer
+            });
 
-        if (attackMoves.find(attack) != attackMoves.end()) {
+        if (valid) {
             break; // Valid choice
         }
         else {
-            std::cout << "Invalid attack choice! Please choose Strong, Fast, or Accurate." << std::endl;
+            std::cout << "Invalid attack stance! Please choose a valid stance." << std::endl;
         }
     }
 
     // Validate defense choice
     while (true) {
-        std::cout << combatant.getName() << ", choose your defense action (Dodge, Block, Parry): ";
-        std::getline(std::cin, defense); // Use getline to avoid leftover characters
+        std::cout << combatant.getName() << ", choose your defense stance: ";
+        std::getline(std::cin, defense);
 
-        // Trim whitespace and normalize input to lowercase
-        defense = toLowerCase(trim(defense));
+        // Check if the defense stance is valid
+        const auto& equippedDefenses = combatant.getDefenseStancesEquipped();
+        valid = std::any_of(equippedDefenses.begin(), equippedDefenses.end(),
+            [&defense](const std::shared_ptr<DefenseStance>& stance) {
+                return stance && stance->getName() == defense; // Dereference the shared pointer
+            });
 
-        if (defenseMoves.find(defense) != defenseMoves.end()) {
+        if (valid) {
             break; // Valid choice
         }
         else {
-            std::cout << "Invalid defense choice! Please choose Dodge, Block, or Parry." << std::endl;
+            std::cout << "Invalid defense stance! Please choose a valid stance." << std::endl;
         }
     }
 
-    return { attack, defense };
+    return { attack, defense }; // Return the chosen attack and defense
 }
 
 // Determine which combatant acts first based on initiative roll
@@ -173,7 +154,7 @@ std::string Combat::determineFirst(Character& combatantA, Character& combatantB)
 }
 
 // Get the damage for the attack
-int Combat::calculateDamage(const Character& attacker, const std::string& attackType) {
+int Combat::calculateDamage(const Character& attacker, const std::string& stanceType) {
     int dieSize = attacker.damageDie();
     int roll = dice.roll(dieSize);
     int damage = roll + 3; // Example bonus, adjust later
@@ -181,9 +162,9 @@ int Combat::calculateDamage(const Character& attacker, const std::string& attack
 }
 
 // Process the attack for a combatant
-void Combat::processAttack(Character& attacker, Character& defender, int attackRoll, int defenseRoll, const std::string& attackType) {
+void Combat::processAttack(Character& attacker, Character& defender, int attackRoll, int defenseRoll, const std::string& stanceType) {
     if (attackRoll >= defenseRoll) {
-        int damage = calculateDamage(attacker, attackType);
+        int damage = calculateDamage(attacker, stanceType);
         defender.setHp(defender.getHp() - damage);
         std::cout << attacker.getName() << " hits! " << defender.getName() << " takes " << damage << " damage." << std::endl;
     }
@@ -191,8 +172,4 @@ void Combat::processAttack(Character& attacker, Character& defender, int attackR
         std::cout << attacker.getName() << " misses!" << std::endl;
     }
 }
-
-// Apply damage to a Character
-void Combat::applyDamage(Character& target, int damage) {
-    target.setHp(target.getHp() - damage);
-}
+// I have not added the advantages system here yet so that needs to get done at some point

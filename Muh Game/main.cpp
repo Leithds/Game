@@ -1,21 +1,24 @@
-#include <iostream>
-#include "Combat.h"
-#include "Character.h"
-#include "Weapon.h"
+#include <SFML/Graphics.hpp>
+#include "MainMenuState.h"
 
 int main() {
-    // Create instances of characters with the new constructor
-    Character player("Hero", "Warriors", "Human"); // (name, clan, species)
-    Character enemy("Goblin", "Monsters", "Goblin");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Main Menu");
 
-    // Create a sword weapon using the appropriate constructor
-    Weapon sword("Iron Sword", 50, 1, 8, "Iron", "Standard"); // (desc, val, qty, die, mat, qual)
+    GameState* currentState = new MainMenuState();
 
-    // Create a combat instance
-    Combat combat;
+    while (window.isOpen()) {
+        currentState->handleInput(window);
+        currentState->update();
+        currentState->render(window);
 
-    // Start the combat loop
-    combat.combatLoop(player, enemy);
+        // Transition to the next state if needed (not implemented here)
+        GameState* nextState = currentState->nextState();
+        if (nextState != nullptr) {
+            delete currentState;
+            currentState = nextState;
+        }
+    }
 
+    delete currentState; // Clean up
     return 0;
 }

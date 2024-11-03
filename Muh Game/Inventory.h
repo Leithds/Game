@@ -1,5 +1,4 @@
-#ifndef INVENTORY_H
-#define INVENTORY_H
+#pragma once
 
 #include <string>
 #include <vector>
@@ -33,5 +32,3 @@ public:
     bool hasConsumable(const std::string& consumable) const;
     bool hasWearable(const std::string& item) const;
 };
-
-#endif // INVENTORY_H

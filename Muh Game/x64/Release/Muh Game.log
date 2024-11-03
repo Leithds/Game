@@ -1,0 +1,66 @@
+﻿  attackStance.cpp
+  character.cpp
+  characterCreationState.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,61): error C2512: 'Character::Character': no appropriate default constructor available
+  (compiling source file 'characterCreationState.cpp')
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,61):
+      while trying to match the argument list '()'
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\xutility(403,61):
+      the template instantiation context (the oldest one first) is
+          C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\characterCreationState.cpp(5,22):
+          see reference to function template instantiation 'std::shared_ptr<Character> std::make_shared<Character,>(void)' being compiled
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\memory(2906,46):
+          see reference to function template instantiation 'std::_Ref_count_obj2<Character>::_Ref_count_obj2<>(void)' being compiled
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.34120\include\memory(2095,18):
+          see reference to function template instantiation 'void std::_Construct_in_place<_Ty,>(_Ty &) noexcept(false)' being compiled
+          with
+          [
+              _Ty=Character
+          ]
+  
+  combat.cpp
+  defenseStance.cpp
+  gameEngine.cpp
+  gameState.cpp
+  main.cpp
+  Inventory.cpp
+  mainMenuState.cpp
+C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\mainMenuState.cpp(74,20): error C2259: 'characterCreationState': cannot instantiate abstract class
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\CharacterCreationState.h(8,7):
+      see declaration of 'characterCreationState'
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\mainMenuState.cpp(74,20):
+      due to following members:
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\mainMenuState.cpp(74,20):
+      'void GameState::handleInput(sf::RenderWindow &)': is abstract
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\GameState.h(8,18):
+      see declaration of 'GameState::handleInput'
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\mainMenuState.cpp(74,20):
+      'void GameState::render(sf::RenderWindow &)': is abstract
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\GameState.h(10,18):
+      see declaration of 'GameState::render'
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\mainMenuState.cpp(74,20):
+      'GameState *GameState::nextState(void)': is abstract
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\GameState.h(11,24):
+      see declaration of 'GameState::nextState'
+  
+C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\mainMenuState.cpp(74,42): error C2259: 'characterCreationState': cannot instantiate abstract class
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\CharacterCreationState.h(8,7):
+      see declaration of 'characterCreationState'
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\mainMenuState.cpp(74,42):
+      due to following members:
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\mainMenuState.cpp(74,42):
+      'void GameState::handleInput(sf::RenderWindow &)': is abstract
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\GameState.h(8,18):
+      see declaration of 'GameState::handleInput'
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\mainMenuState.cpp(74,42):
+      'void GameState::render(sf::RenderWindow &)': is abstract
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\GameState.h(10,18):
+      see declaration of 'GameState::render'
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\mainMenuState.cpp(74,42):
+      'GameState *GameState::nextState(void)': is abstract
+      C:\Users\ldsch\OneDrive\Desktop\My Stuff\My Game\Game\Muh Game\GameState.h(11,24):
+      see declaration of 'GameState::nextState'
+  
+  menu.cpp
+  roll.cpp
+  stance.cpp

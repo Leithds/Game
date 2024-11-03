@@ -1,10 +1,13 @@
-#ifndef CHARACTER_H
-#define CHARACTER_H
+#pragma once
 
 #include <iostream>
 #include <string>
 #include <vector>
+#include <memory>
 #include "Inventory.h"
+#include "Stance.h"
+#include "AttackStance.h"
+#include "DefenseStance.h"
 
 class Character {
 private:
@@ -14,14 +17,14 @@ private:
     std::string species;
 
     // Physical Stats
-    int str; // Strength
-    int dex; // Dexterity
-    int con; // Constitution
+    int str;  // Strength
+    int dex;  // Dexterity
+    int con;  // Constitution
 
     // Mental Stats
-    int will;// will (duh)
-    int foc; // focus
-    int res; // resilience
+    int will; // Will
+    int foc;  // Focus
+    int res;  // Resilience
 
     // Core Stats
     int level;
@@ -30,70 +33,64 @@ private:
     int hp;
     int relation_points;
 
-    // Skills
-    std::vector<std::string> weapon_skills;
+    // Skill Types
+    std::vector<std::string> attack_skills;
     std::vector<std::string> defense_skills;
-    std::vector<std::string> mystic_skills;
+    std::vector<std::string> weapon_skills;
+    std::vector<std::string> style_skills;
+    
+    // Vectors for managing stances
+    std::vector<std::shared_ptr<AttackStance>> attackStancesKnown;
+    std::vector<std::shared_ptr<AttackStance>> attackStancesEquipped;
+    std::vector<std::shared_ptr<DefenseStance>> defenseStancesKnown;
+    std::vector<std::shared_ptr<DefenseStance>> defenseStancesEquipped;
 
-    // Moves Known
-    std::vector<std::string> attack_moves;
-    std::vector<std::string> defense_moves;
-    std::vector<std::string> mystic_moves;
+    // Inventory & Equipment
+    Inventory inventory;
+    std::vector<std::string> equipped_weapons;  // Primary, secondary, etc.
+    std::vector<std::string> equipment_slots;   // Helmet, armor, etc.
 
 public:
-    // Inventory class
-    Inventory inventory;
-
     // Constructor
-    Character(const std::string& name,
-        const std::string& clan,
-        const std::string& species);
+    Character(const std::string& name, const std::string& clan, const std::string& species);
 
-    // Getters and setters
+    void initializeStarterStances();
+
+    // Getters and Setters
 
     // Labels
     std::string getName() const;
     void setName(const std::string& n);
-
     std::string getClan() const;
     void setClan(const std::string& c);
-
     std::string getSpecies() const;
     void setSpecies(const std::string& s);
 
     // Physical Stats
     int getStr() const;
     void setStr(int s);
-
     int getDex() const;
     void setDex(int d);
-
     int getCon() const;
     void setCon(int c);
 
     // Mental Stats
     int getWill() const;
     void setWill(int w);
-
     int getFocus() const;
     void setFocus(int f);
-
     int getResilience() const;
     void setResilience(int r);
 
     // Core Stats
     int getLevel() const;
     void setLevel(int l);
-
     int getExp() const;
     void setExp(int e);
-
     int getRealm() const;
     void setRealm(int r);
-
     int getHp() const;
     void setHp(int h);
-
     int getRelationPoints() const;
     void setRelationPoints(int rp);
 
@@ -104,44 +101,37 @@ public:
     // HP Management
     void heal(int amount);
 
-    // Inventory Management
-    //void equipWeapon(const std::string& weapon);
-    //void unequipWeapon();
-    //void useConsumable(const std::string& consumable);
-    //void listInventory() const;
-
     // Skills Management
-    // Weapon Skills
-    std::vector<std::string> getWeaponSkills() const;
-    void addWeaponSkill(const std::string& skill);
-
-    // Defense Skills
+    std::vector<std::string> getAttackSkills() const;
+    void addAttackSkill(const std::string& skill);
     std::vector<std::string> getDefenseSkills() const;
     void addDefenseSkill(const std::string& skill);
+    std::vector<std::string> getWeaponSkills() const;
+    void addWeaponSkill(const std::string& skill);
+    std::vector<std::string> getStyleSkills() const;
+    void addStyleSkill(const std::string& skill);
 
-    // Mystic Skills
-    std::vector<std::string> getMysticSkills() const;
-    void addMysticSkill(const std::string& skill);
+    // Get Stats for Stances
+    int getStatFromStance(const std::string& statName) const;
 
-    // Moves Management
-    // Attack Moves
-    std::vector<std::string> getAttackMoves() const;
-    void addAttackMove(const std::string& move);
+    // Stance Management
+    void addAttackStance(std::shared_ptr<AttackStance> stance);
+    void equipAttackStance(std::shared_ptr<AttackStance> stance);
+    void addDefenseStance(std::shared_ptr<DefenseStance> stance);
+    void equipDefenseStance(std::shared_ptr<DefenseStance> stance);
 
-    // Defense Moves
-    std::vector<std::string> getDefenseMoves() const;
-    void addDefenseMove(const std::string& move);
+    const std::vector<std::shared_ptr<AttackStance>>& getAttackStancesEquipped() const;
+    const std::vector<std::shared_ptr<DefenseStance>>& getDefenseStancesEquipped() const;
+    const std::vector<std::shared_ptr<AttackStance>>& getAttackStancesKnown() const;
+    const std::vector<std::shared_ptr<DefenseStance>>& getDefenseStancesKnown() const;
 
-    // Mystic Moves
-    std::vector<std::string> getMysticMoves() const;
-    void addMysticMove(const std::string& move);
+    // Equipment Management
+    void equipWeapon(const std::string& weapon);
+    void unequipWeapon();
+    void addEquipment(const std::string& equipment);
+    void removeEquipment(const std::string& equipment);
 
     // Combat-Related Methods
-    // Draw method
     int draw() const;
-
-    // Damage Die method
     int damageDie() const;
 };
-
-#endif // CHARACTER_H
